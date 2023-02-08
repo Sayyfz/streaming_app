@@ -7,6 +7,10 @@ const secret = process.env.TOKEN_SECRET as string;
 const store = new UserStore();
 
 export const index = async (req: Request, res: Response) => {
-    const users = await store.index();
-    res.json(users);
+    try {
+        const users = await store.index();
+        return res.status(200).json(users);
+    } catch (err) {
+        return res.status(400).json((err as Error).message);
+    }
 };
