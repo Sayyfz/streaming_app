@@ -3,9 +3,6 @@ import bcrypt from 'bcrypt';
 
 export type User = {
     id?: number;
-    first_name: string;
-    last_name: string;
-    balance: number;
     email: string;
     password: string;
 };
