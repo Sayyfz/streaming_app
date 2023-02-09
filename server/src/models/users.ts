@@ -32,7 +32,7 @@ export class UserStore {
       const existSql = query.exist('users', 'email');
       const existResult = await conn.query(existSql, [user.email])
       if(existResult.rows.length) {
-        throw Error('email already exists')
+        throw Error('Email already exists')
       }
 
       const insertSql = query.insert('users', [user], ['*'])
@@ -59,6 +59,32 @@ export class UserStore {
       return result.rows[0]
     } catch (err) {
       throwError('Cannot find user', 422)
+    } finally {
+      conn.release();
+    }
+  }
+
+  async update(newUser: User, id: number): Promise<User> {
+    const conn = await db.connect();
+
+    try {
+      const existSql = query.exist('users', 'email');
+      const existResult = await conn.query(existSql, [newUser.email]);
+      
+      if(existResult.rows.length) {
+        throw Error('Email already exist');
+      }
+
+      const updateSql = query.update('users', newUser, ['*']);
+      const result = await conn.query(updateSql.sql, [newUser]);
+
+      if (!result.rows.length) {
+        throw Error("User not found");
+      }
+
+      return result.rows[0];
+    } catch (err) {
+      throwError('Cannot update user', 422)
     } finally {
       conn.release();
     }
