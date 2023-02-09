@@ -4,6 +4,7 @@ import { throwError } from "../helpers/error.helpers";
 import query from "../helpers/query.helpers";
 import { Movie } from "../types";
 
+
 export class MovieStore {
   // get all movies
   async index(): Promise<Movie[]> {
@@ -12,9 +13,8 @@ export class MovieStore {
       // "SELECT * FROM movies"
       const sql = query.select(["*"], "movies");
 
-      console.log(sql);
-
       const result = await connection.query(sql);
+
       return result.rows;
     } catch (err) {
       throwError(`Cannot get movies,  ${(err as Error).message}`, 422);
@@ -46,6 +46,7 @@ export class MovieStore {
   async create(movie: Movie): Promise<Movie> {
     const connection = await db.connect();
     try {
+      
       const { name } = movie;
       const existsql = query.exist("movies", "name");
       const existMovie = await connection.query(existsql, [name]);
@@ -90,6 +91,11 @@ export class MovieStore {
 
       const result = await connection.query(sql, [...values, id]);
 
+      console.log(result.rows.length);
+
+      if (!result.rows.length) {
+        throw Error("movie not found");
+      }
       return result.rows[0];
     } catch (error) {
       throwError(`Could not update product,  ${(error as Error).message}`, 422);
