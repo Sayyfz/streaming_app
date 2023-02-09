@@ -46,4 +46,21 @@ export class UserStore {
       conn.release()
     }
   }
+
+  async show(id: number): Promise<User> {
+    const conn = await db.connect();
+
+    try {
+      const sql = query.select(['*'], 'users', ['id'])
+      const result = await conn.query(sql, [id]);
+      if(!result.rows.length) {
+        throw Error('User does not exist');
+      }
+      return result.rows[0]
+    } catch (err) {
+      throwError('Cannot find user', 422)
+    } finally {
+      conn.release();
+    }
+  }
 }
