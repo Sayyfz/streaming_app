@@ -1,5 +1,5 @@
 import express from "express";
-import usersRoutes from "./api/userRoutes";
+import usersRoutes from "./api/usersRoutes";
 import moviesRoutes from "./api/moviesRoutes";
 
 const routes = express.Router();
