@@ -1,5 +1,6 @@
 import { MovieStore } from "../models/movies";
 import { NextFunction, Request, Response } from "express";
+import validation from "../helpers/validation";
 
 const store = new MovieStore();
 
@@ -31,6 +32,7 @@ export const create = async (
   next: NextFunction
 ) => {
   try {
+    validation({ name: req.body.name }).isNotEmpty();
     const movie = await store.create(req.body);
     return res.status(201).json(movie);
   } catch (err) {
