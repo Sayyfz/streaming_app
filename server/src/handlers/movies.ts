@@ -32,7 +32,7 @@ export const create = async (
   next: NextFunction
 ) => {
   try {
-    validation("dsadsad").isEmail;
+    validation({ name: req.body.name }).isNotEmpty();
     const movie = await store.create(req.body);
     return res.status(201).json(movie);
   } catch (err) {

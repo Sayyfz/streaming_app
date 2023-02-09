@@ -1,7 +1,13 @@
+import { throwError } from "./error.helpers";
+
 class Validation {
-  value: string;
-  constructor(value: string) {
-    this.value = value;
+  column: { [x: string]: string | number };
+  key: string;
+  value: string | number;
+  constructor(quary: { [x: string]: string | number }) {
+    this.column = quary;
+    this.key = Object.keys(this.column)[0];
+    this.value = Object.values(this.column)[0];
   }
 
   isEmail() {
@@ -14,13 +20,20 @@ class Validation {
 
     return this;
   }
-}
-let instance: Validation; // all files will receive this instance
 
-export default (options: string) => {
+  isNotEmpty(): this | undefined {
+    if (this.value === undefined) return;
+    if (!this.value.toString().length) {
+      throwError(`${this.key} is required`, 422);
+    }
+    return this;
+  }
+}
+let instance: Validation;
+
+export default (options: { [x: string]: string | number }) => {
   console.log(options);
   if (!instance) {
-    // only the first call to require will use these options to create an instance
     instance = new Validation(options);
   }
   return instance;
