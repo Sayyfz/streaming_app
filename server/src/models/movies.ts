@@ -32,7 +32,7 @@ export class MovieStore {
       const result = await connection.query(sql, [id]);
 
       if (!result.rows.length) {
-        throw Error("movie not found");
+        throw Error("Movie not found");
       }
 
       return result.rows[0];
@@ -51,7 +51,7 @@ export class MovieStore {
       const existsql = query.exist("movies", "name");
       const existMovie = await connection.query(existsql, [name]);
       if (existMovie.rows[0].exist) {
-        throw Error("movie name is exist");
+        throw Error("Movie name already exists");
       }
 
       const now = new Date();
@@ -83,7 +83,7 @@ export class MovieStore {
         const existsql = query.exist("movies", "name");
         const existMovie = await connection.query(existsql, [name]);
         if (existMovie.rows[0].exist) {
-          throw Error("movie name is exist");
+          throw Error("Movie name already exists");
         }
       }
 
@@ -94,7 +94,7 @@ export class MovieStore {
       console.log(result.rows.length);
 
       if (!result.rows.length) {
-        throw Error("movie not found");
+        throw Error("Movie not found");
       }
       return result.rows[0];
     } catch (error) {
