@@ -116,7 +116,7 @@ export class MovieStore {
       }
       return result.rows[0];
     } catch (error) {
-      throwError(`Could not delte movie,  ${(error as Error).message}`, 422);
+      throwError(`Could not delete movie,  ${(error as Error).message}`, 422);
     } finally {
       connection.release();
     }

@@ -41,7 +41,7 @@ export class UserStore {
       return result.rows[0];
 
     } catch (err) {
-      throwError(`Cannot create user ${err}`, 422)
+      throwError(`Cannot create user ${(err as Error).message}`, 422)
     } finally {
       conn.release()
     }
@@ -58,7 +58,7 @@ export class UserStore {
       }
       return result.rows[0]
     } catch (err) {
-      throwError('Cannot find user', 422)
+      throwError(`Cannot find user ${(err as Error).message}`, 422)
     } finally {
       conn.release();
     }
@@ -84,9 +84,28 @@ export class UserStore {
 
       return result.rows[0];
     } catch (err) {
-      throwError('Cannot update user', 422)
+      throwError(`Cannot update user ${(err as Error).message}`, 422)
     } finally {
       conn.release();
+    }
+  }
+
+  async delete(id: number): Promise<User> {
+    const conn = await db.connect();
+    try {
+  
+      const deleteSql = query.delete('users', ['*']);
+      const result = await conn.query(deleteSql, [id]);
+  
+      if(!result.rows.length) {
+        throw Error('Cannot find user');
+      }
+  
+      return result.rows[0];
+    } catch (err) {
+      throwError(`Cannot delete user ${(err as Error).message}`, 422)
+    } finally {
+      conn.release()
     }
   }
 }
