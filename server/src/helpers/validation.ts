@@ -10,19 +10,25 @@ class Validation {
   }
 
   isEmail() {
-    console.log("email", this.value);
-
+    const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+    const result = re.test(this.value as string)
+    if(!result) {
+      throwError('Invalid email', 422)
+    }
     return this;
   }
-  isPassward() {
-    console.log("isPassward", this.value);
-
+  isPassword() {
+    const re = /((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,}))/
+    const result = re.test(this.value as string);
+    if(!result) {
+      throwError('Password must at least contain 6 characters and a combination of lowercase and uppercase letters and numbers', 422)
+    }
     return this;
   }
 
   isNotEmpty(): this | undefined {
     if (this.value === undefined) return;
-    if (!this.value.toString().length) {
+    if (!(this.value as string).length) {
       throwError(`${this.key} is required`, 422);
     }
     return this;
@@ -44,3 +50,18 @@ export default (options: { [x: string]: string | number }) => {
   }
   return instance.set(options);
 };
+
+export default getInstance
+
+// const getInstance = () => {
+//   let instance: Validation;
+//   return (validationTarget: { [x: string]: string | number }) => {
+//     if (!instance) {
+//       instance = new Validation(validationTarget);
+//     }
+//     return instance;
+//   };
+// };
+
+// export default getInstance()
+

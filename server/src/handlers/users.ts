@@ -1,6 +1,11 @@
-import { NextFunction, Request, Response } from "express";
-import { UserStore } from "../models/users";
+import { NextFunction, Request, Response } from 'express';
+import { User, UserStore } from '../models/users';
+import jwt from 'jsonwebtoken';
+import validate from '../helpers/validation';
+import config from '../config';
+import { throwError } from '../helpers/error.helpers';
 
+const secret = config.env('SECRET_TOKEN_KEY');
 const store = new UserStore();
 
 export const index = async (
@@ -16,18 +21,19 @@ export const index = async (
   }
 };
 
-export const create = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const user = await store.create(req.body);
-    return res.status(201).json(user);
-  } catch (err) {
-    next(err);
-  }
-};
+export const create = async (req: Request, res: Response, next: NextFunction) => {
+    const newUser: User = req.body;
+    try {
+        validate({ email: newUser.email }).isEmail().isNotEmpty();
+        validate({ password: newUser.password }).isPassword().isNotEmpty();
+        const { id } =  await store.create(newUser);
+
+        const token = jwt.sign({id}, secret as string);
+        return res.status(201).json(token);
+    } catch (err) {
+        next(err);
+    }
+}
 
 export const show = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -38,18 +44,20 @@ export const show = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export const update = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const user = await store.update(req.body, req.params.id);
-    return res.status(200).json(user);
-  } catch (err) {
-    next(err);
-  }
-};
+export const update = async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body;
+    try {
+        if(!email || !password) throwError('Please provide email and password to update', 400);
+        validate({ email }).isEmail().isNotEmpty();
+        validate({ password }).isPassword().isNotEmpty();
+
+        const user = { email, password }
+        const newUser = await store.update(user, +req.params.id);
+        return res.status(200).json(newUser);
+    } catch (err) {
+        next(err);
+    }
+}
 
 export const remove = async (
   req: Request,
