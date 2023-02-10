@@ -51,7 +51,6 @@ export default (options: { [x: string]: string | number }) => {
   return instance.set(options);
 };
 
-export default getInstance
 
 // const getInstance = () => {
 //   let instance: Validation;
