@@ -4,20 +4,26 @@ class Validation {
   column: { [x: string]: string | number };
   key: string;
   value: string | number;
-  constructor(quary: { [x: string]: string | number }) {
-    this.column = quary;
+  constructor(query: { [x: string]: string | number }) {
+    this.column = query;
     this.key = Object.keys(this.column)[0];
     this.value = Object.values(this.column)[0];
   }
 
   isEmail() {
-    console.log("email", this.value);
-
+    const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+    const result = re.test(this.value.toString())
+    if(!result) {
+      throwError('Invalid email', 400)
+    }
     return this;
   }
-  isPassward() {
-    console.log("isPassward", this.value);
-
+  isPassword() {
+    const re = /((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,}))/
+    const result = re.test(this.value.toString());
+    if(!result) {
+      throwError('Password must at least contain 6 characters and a combination of lowercase and uppercase letters and numbers', 422)
+    }
     return this;
   }
 
@@ -29,12 +35,22 @@ class Validation {
     return this;
   }
 }
-let instance: Validation;
-
-export default (options: { [x: string]: string | number }) => {
-  console.log(options);
-  if (!instance) {
-    instance = new Validation(options);
-  }
-  return instance;
+const getInstance = (validationTarget: { [x: string]: string | number }) => {
+  // console.log(validationTarget);
+  return new Validation(validationTarget)
 };
+
+export default getInstance
+
+// const getInstance = () => {
+//   let instance: Validation;
+//   return (validationTarget: { [x: string]: string | number }) => {
+//     if (!instance) {
+//       instance = new Validation(validationTarget);
+//     }
+//     return instance;
+//   };
+// };
+
+// export default getInstance()
+

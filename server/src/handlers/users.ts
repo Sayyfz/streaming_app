@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { User, UserStore } from '../models/users';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import verifyAuthToken from '../middleware/global';
-import validation from '../helpers/validation';
+import validate from '../helpers/validation';
 import config from '../config';
 
 const secret = config.env('TOKEN_SECRET');
@@ -18,7 +18,10 @@ export const index = async (req: Request, res: Response, next: NextFunction) => 
 };
 
 export const create = async (req: Request, res: Response, next: NextFunction) => {
+    const newUser: User = req.body;
     try {
+        validate({ email: newUser.email }).isEmail().isNotEmpty();
+        validate({ password: newUser.password }).isPassword().isNotEmpty();
         const user = await store.create(req.body);
         return res.status(201).json(user);
     } catch (err) {
