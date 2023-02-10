@@ -9,8 +9,11 @@ export class MovieStore {
   async index(): Promise<Movie[]> {
     const connection = await db.connect();
     try {
-      // "SELECT * FROM movies"
-      const sql = query.select(["*"], "movies");
+      const sql = `SELECT m.id,m.name, m.release_date, m.poster_image,count(mr.*),
+      coalesce(floor( count(mr.*)::float / sum(mr.rating)::float  * 100 )::integer,0 ) as rating
+      FROM movies AS m
+      LEFT JOIN movies_rating AS mr on m.id = mr.movie_id 
+      GROUP BY m.id`;
 
       const result = await connection.query(sql);
 
