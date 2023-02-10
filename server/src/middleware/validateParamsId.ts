@@ -11,3 +11,5 @@ export const validateParamsId = (
     }
     next()
 }
+
+export default validateParamsId

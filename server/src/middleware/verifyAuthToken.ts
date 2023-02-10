@@ -1,10 +1,10 @@
 import { NextFunction } from "connect"
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import { Request, Response } from "express"
 
 const secret = process.env.SECRET_TOKEN_KEY as string
 
-export const verifyAuthToken = (
+const verifyAuthToken = (
     req: Request,
     res: Response,
     next: NextFunction
@@ -15,9 +15,13 @@ export const verifyAuthToken = (
             throw Error("Auth token required")
         }
         const token = authHeader.split(" ")[1]
-        jwt.verify(token, secret)
+        const decoded = jwt.verify(token, secret) as JwtPayload;
+        res.locals.userId = decoded.id
+        console.log(res.locals);
         next()
     } catch (err) {
         return res.status(401).json(`An error occurred: ${err}`)
     }
 }
+
+export default verifyAuthToken

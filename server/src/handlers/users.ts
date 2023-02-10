@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { User, UserStore } from '../models/users';
+import { UserStore } from '../models/users';
+import { User } from '../types';
 import jwt from 'jsonwebtoken';
 import validate from '../helpers/validation';
 import config from '../config';
@@ -52,7 +53,7 @@ export const update = async (req: Request, res: Response, next: NextFunction) =>
         validate({ password }).isPassword().isNotEmpty();
 
         const user = { email, password }
-        const newUser = await store.update(user, +req.params.id);
+        const newUser = await store.update(user, res.locals.userId);
         return res.status(200).json(newUser);
     } catch (err) {
         next(err);
@@ -65,7 +66,7 @@ export const remove = async (
   next: NextFunction
 ) => {
   try {
-    const user = await store.delete(req.params.id);
+    const user = await store.delete(res.locals.userId);
     return res.status(200).json(user);
   } catch (err) {
     next(err);

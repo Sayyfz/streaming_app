@@ -12,7 +12,7 @@ export const authOwnership = (
         const token = authHeader.split(" ")[1]
         const payload = jwt.decode(token) as JwtPayload
 
-        if (payload.id !== +req.params.id) {
+        if (payload.id != req.params.id) {
             throw "AuthErr: You are not authroized to do this action"
         }
         next()
@@ -20,3 +20,5 @@ export const authOwnership = (
         return res.status(401).json(`An error occured: ${err}`)
     }
 }
+
+export default authOwnership

@@ -1,13 +1,14 @@
 import { Router } from "express";
 import * as controllers from "../../handlers/users";
-import { authOwnership, validateParamsId, verifyAuthToken } from "../../middleware/global";
+import verifyAuthToken from "../../middleware/verifyAuthToken";
+import validateParamsId from "../../middleware/validateParamsId";
 
 const usersRoute = Router();
 
 usersRoute.get("/", verifyAuthToken, controllers.index);
-usersRoute.get("/:id", validateParamsId, verifyAuthToken, controllers.show);
+usersRoute.get("/:id", validateParamsId, verifyAuthToken, controllers.show)
 usersRoute.post("/", controllers.create)
-usersRoute.patch("/:id", validateParamsId, verifyAuthToken, controllers.update)
-usersRoute.delete("/:id", validateParamsId, verifyAuthToken, controllers.remove)
+usersRoute.patch("/", validateParamsId, verifyAuthToken, controllers.update)
+usersRoute.delete("/", validateParamsId, verifyAuthToken, controllers.remove)
 
 export default usersRoute;
