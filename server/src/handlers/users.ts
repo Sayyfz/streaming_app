@@ -22,7 +22,7 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
     try {
         validate({ email: newUser.email }).isEmail().isNotEmpty();
         validate({ password: newUser.password }).isPassword().isNotEmpty();
-        const user = await store.create(req.body);
+        const user = await store.create(newUser);
         return res.status(201).json(user);
     } catch (err) {
         next(err);
@@ -39,8 +39,11 @@ export const show = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 export const update = async (req: Request, res: Response, next: NextFunction) => {
+    const newUser: User = req.body;
     try {
-        const user = await store.update(req.body, +req.params.id);
+        validate({ email: newUser.email }).isEmail().isNotEmpty();
+        validate({ password: newUser.password }).isPassword().isNotEmpty();
+        const user = await store.update(newUser, +req.params.id);
         return res.status(200).json(user);
     } catch (err) {
         next(err);
