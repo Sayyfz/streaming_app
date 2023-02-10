@@ -4,7 +4,6 @@ import { throwError } from "../helpers/error.helpers";
 import query from "../helpers/query.helpers";
 import { Movie } from "../types";
 
-
 export class MovieStore {
   // get all movies
   async index(): Promise<Movie[]> {
@@ -46,7 +45,6 @@ export class MovieStore {
   async create(movie: Movie): Promise<Movie> {
     const connection = await db.connect();
     try {
-      
       const { name } = movie;
       const existsql = query.exist("movies", "name");
       const existMovie = await connection.query(existsql, [name]);
@@ -122,3 +120,13 @@ export class MovieStore {
     }
   }
 }
+
+const getInstance = (() => {
+  let instance: MovieStore;
+  return () => {
+    if (instance) return instance;
+    return new MovieStore();
+  };
+})();
+
+export default getInstance;
