@@ -49,7 +49,6 @@ export class MovieStore {
     const connection = await db.connect();
     try {
       const { name, release_date, poster_image } = movie;
-
       const existsql = query.exist("movies", "name");
       const existMovie = await connection.query(existsql, [name]);
       if (existMovie.rows[0].exist) {
@@ -124,3 +123,13 @@ export class MovieStore {
     }
   }
 }
+
+const getInstance = (() => {
+  let instance: MovieStore;
+  return () => {
+    if (instance) return instance;
+    return new MovieStore();
+  };
+})();
+
+export default getInstance;
