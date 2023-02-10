@@ -43,9 +43,9 @@ export const show = async (req: Request, res: Response, next: NextFunction) => {
 export const update = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
     try {
-        if(!email && !password) throwError('Please provide email and password to update', 400);
-        if(email) validate({ email }).isEmail().isNotEmpty();
-        if(password) validate({ password }).isPassword().isNotEmpty();
+        if(!email || !password) throwError('Please provide email and password to update', 400);
+        validate({ email }).isEmail().isNotEmpty();
+        validate({ password }).isPassword().isNotEmpty();
 
         const user = { email, password }
         const newUser = await store.update(user, +req.params.id);
