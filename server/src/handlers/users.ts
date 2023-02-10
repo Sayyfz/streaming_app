@@ -22,8 +22,11 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
     try {
         validate({ email: newUser.email }).isEmail().isNotEmpty();
         validate({ password: newUser.password }).isPassword().isNotEmpty();
-        const user = await store.create(newUser);
-        return res.status(201).json(user);
+        await store.create(newUser);
+
+        const token = jwt.sign({id: newUser.id}, process.env.SECRET_TOKEN_KEY as string);
+        console.log(token)
+        return res.status(201).json(token);
     } catch (err) {
         next(err);
     }
