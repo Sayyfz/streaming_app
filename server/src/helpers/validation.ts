@@ -1,11 +1,10 @@
 import { throwError } from "./error.helpers";
-
 class Validation {
-  column: { [x: string]: string | number };
-  key: string;
-  value: string | number;
-  constructor(query: { [x: string]: string | number }) {
-    this.column = query;
+  private column: { [x: string]: string | number };
+  private key: string;
+  private value: string | number;
+  constructor(quary: { [x: string]: string | number }) {
+    this.column = quary;
     this.key = Object.keys(this.column)[0];
     this.value = Object.values(this.column)[0];
   }
@@ -34,10 +33,22 @@ class Validation {
     }
     return this;
   }
+
+  set(col: { [x: string]: string | number }) {
+    this.column = col;
+
+    return this
+  }
 }
-const getInstance = (validationTarget: { [x: string]: string | number }) => {
-  // console.log(validationTarget);
-  return new Validation(validationTarget)
+
+let instance: Validation;
+
+export default (options: { [x: string]: string | number }) => {
+  console.log(options);
+  if (!instance) {
+    instance = new Validation(options);
+  }
+  return instance.set(options);
 };
 
 export default getInstance

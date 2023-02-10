@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import routes from "./routes";
 import errorMiddleware from "./middleware/error.middleware";
+import path from "path";
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ app.use(cors());
 
 // Middleware to parses incoming requests with JSON payloads and is based on body-parser.
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, "./public")));
 
 //Endpoints Routes
 app.use("/api", routes);

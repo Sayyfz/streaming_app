@@ -1,5 +1,0 @@
-CREATE TABLE IF NOT EXISTS movies(
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) UNIQUE NOT NULL,
-    release_date date NOT NULL
-);

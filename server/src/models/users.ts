@@ -46,7 +46,7 @@ export class UserStore {
     }
   }
 
-  async show(id: number): Promise<User> {
+  async show(id: string): Promise<User> {
     const conn = await db.connect();
 
     try {
@@ -63,7 +63,7 @@ export class UserStore {
     }
   }
 
-  async update(newUser: User, id: number): Promise<User> {
+  async update(newUser: User, id: string): Promise<User> {
     const conn = await db.connect();
 
     try {
@@ -93,7 +93,7 @@ export class UserStore {
     }
   }
 
-  async delete(id: number): Promise<User> {
+  async delete(id: string): Promise<User> {
     const conn = await db.connect();
     try {
       const deleteSql = query.delete("users", ["*"]);
