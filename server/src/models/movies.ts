@@ -4,7 +4,6 @@ import { throwError } from "../helpers/error.helpers";
 import query from "../helpers/query.helpers";
 import { Movie } from "../types";
 
-
 export class MovieStore {
   // get all movies
   async index(): Promise<Movie[]> {
@@ -46,26 +45,26 @@ export class MovieStore {
   async create(movie: Movie): Promise<Movie> {
     const connection = await db.connect();
     try {
-      
-      const { name } = movie;
+      const { name, release_date, poster_image } = movie;
+
       const existsql = query.exist("movies", "name");
       const existMovie = await connection.query(existsql, [name]);
       if (existMovie.rows[0].exist) {
         throw Error("Movie name already exists");
       }
 
-      const now = new Date();
+      console.log("poster_image", poster_image);
 
-      const sql = `INSERT INTO movies ( name, release_date ) 
-      values ($1, $2) RETURNING *`;
+      const sql = `INSERT INTO movies ( name, release_date,poster_image ) 
+      values ($1, $2, $3) RETURNING *`;
 
-      const result = await connection.query(sql, [name, now]);
+      const result = await connection.query(sql, [
+        name,
+        release_date,
+        poster_image,
+      ]);
 
-      return {
-        id: result.rows[0].id,
-        name: result.rows[0].name,
-        release_date: dateFormat(result.rows[0].release_date),
-      };
+      return result.rows[0];
     } catch (error) {
       throwError(`Could not create movie,  ${(error as Error).message}`, 422);
     } finally {

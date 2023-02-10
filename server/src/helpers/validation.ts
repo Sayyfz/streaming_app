@@ -1,9 +1,8 @@
 import { throwError } from "./error.helpers";
-
 class Validation {
-  column: { [x: string]: string | number };
-  key: string;
-  value: string | number;
+  private column: { [x: string]: string | number };
+  private key: string;
+  private value: string | number;
   constructor(quary: { [x: string]: string | number }) {
     this.column = quary;
     this.key = Object.keys(this.column)[0];
@@ -28,7 +27,14 @@ class Validation {
     }
     return this;
   }
+
+  set(col: { [x: string]: string | number }) {
+    this.column = col;
+
+    return this
+  }
 }
+
 let instance: Validation;
 
 export default (options: { [x: string]: string | number }) => {
@@ -36,5 +42,5 @@ export default (options: { [x: string]: string | number }) => {
   if (!instance) {
     instance = new Validation(options);
   }
-  return instance;
+  return instance.set(options);
 };

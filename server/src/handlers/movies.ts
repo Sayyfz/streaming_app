@@ -1,6 +1,9 @@
 import { MovieStore } from "../models/movies";
 import { NextFunction, Request, Response } from "express";
 import validation from "../helpers/validation";
+import { throwError } from "../helpers/error.helpers";
+import resizeImage from "../utiles/sharp";
+import { postersPath } from "../path";
 
 const store = new MovieStore();
 
@@ -33,7 +36,18 @@ export const create = async (
 ) => {
   try {
     validation({ name: req.body.name }).isNotEmpty();
-    const movie = await store.create(req.body);
+    validation({ release_date: req.body.release_date }).isNotEmpty();
+    const file = req.file;
+    if (!file) {
+      throwError("please upload poster image", 422);
+    }
+
+    const poster_image = await resizeImage(file.buffer, 300, 500, postersPath);
+
+    const movie = await store.create({
+      ...req.body,
+      poster_image,
+    });
     return res.status(201).json(movie);
   } catch (err) {
     next(err);
