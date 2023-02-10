@@ -12,15 +12,15 @@ class Validation {
 
   isEmail() {
     const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
-    const result = re.test(this.value.toString())
+    const result = re.test(this.value as string)
     if(!result) {
-      throwError('Invalid email', 400)
+      throwError('Invalid email', 422)
     }
     return this;
   }
   isPassword() {
     const re = /((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,}))/
-    const result = re.test(this.value.toString());
+    const result = re.test(this.value as string);
     if(!result) {
       throwError('Password must at least contain 6 characters and a combination of lowercase and uppercase letters and numbers', 422)
     }
@@ -29,7 +29,7 @@ class Validation {
 
   isNotEmpty(): this | undefined {
     if (this.value === undefined) return;
-    if (!this.value.toString().length) {
+    if (!(this.value as string).length) {
       throwError(`${this.key} is required`, 422);
     }
     return this;

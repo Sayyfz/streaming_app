@@ -73,7 +73,7 @@ export class UserStore {
       const existSql = query.exist('users', 'email');
       const existResult = await conn.query(existSql, [newUser.email]);
       if(existResult.rows[0].exist) {
-        throw Error('Email already exist');
+        throw Error('Email already exists');
       }
 
       const hash = bcrypt.hashSync(newUser.password + config.env('SECRET_BCRYPT_PASSWORD'), parseInt(process.env.BCRYPT_SALT as string || '10'))
