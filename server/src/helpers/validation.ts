@@ -3,8 +3,9 @@ class Validation {
   private column: { [x: string]: string | number };
   private key: string;
   private value: string | number;
-  constructor(quary: { [x: string]: string | number }) {
-    this.column = quary;
+  
+  constructor(query: { [x: string]: string | number }) {
+    this.column = query;
     this.key = Object.keys(this.column)[0];
     this.value = Object.values(this.column)[0];
   }
@@ -34,7 +35,7 @@ class Validation {
     return this;
   }
 
-  set(col: { [x: string]: string | number }) {
+  setOptions(col: { [x: string]: string | number }) {
     this.column = col;
 
     return this
@@ -48,19 +49,5 @@ export default (options: { [x: string]: string | number }) => {
   if (!instance) {
     instance = new Validation(options);
   }
-  return instance.set(options);
+  return instance.setOptions(options);
 };
-
-
-// const getInstance = () => {
-//   let instance: Validation;
-//   return (validationTarget: { [x: string]: string | number }) => {
-//     if (!instance) {
-//       instance = new Validation(validationTarget);
-//     }
-//     return instance;
-//   };
-// };
-
-// export default getInstance()
-
