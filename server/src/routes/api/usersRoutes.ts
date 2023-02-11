@@ -6,9 +6,10 @@ import validateParamsId from "../../middleware/validateParamsId"
 const usersRoute = Router()
 
 usersRoute.get("/", verifyAuthToken, controllers.index)
-usersRoute.get("/:id", validateParamsId, verifyAuthToken, controllers.show)
+usersRoute.get("/profile", verifyAuthToken, controllers.show)
 usersRoute.post("/", controllers.create)
 usersRoute.patch("/", verifyAuthToken, controllers.update)
 usersRoute.delete("/", verifyAuthToken, controllers.remove)
+usersRoute.post("/auth", controllers.login)
 
 export default usersRoute
