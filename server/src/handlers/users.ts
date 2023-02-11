@@ -74,7 +74,7 @@ export const remove = async (
     next: NextFunction
 ) => {
     try {
-        const user = await store.delete(res.locals.userId)
+        const user = await store.delete(res.locals.userId as string)
         return res.status(200).json(user)
     } catch (err) {
         next(err)

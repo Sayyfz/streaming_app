@@ -23,7 +23,7 @@ describe("USER SPEC", () => {
     })
 
     it("should show the user created earlier", async () => {
-        const u = await store.show(user.id as unknown as number)
+        const u = await store.show(user.id as string)
         expect(u).toEqual(user)
     })
 
@@ -32,16 +32,13 @@ describe("USER SPEC", () => {
             email: "updated@gmail.com",
             password: "testjjS2",
         }
-        const updatedUser = await store.update(
-            newUser,
-            user.id as unknown as number
-        )
+        const updatedUser = await store.update(newUser, user.id as string)
         expect(updatedUser).toEqual({ id: user.id, ...newUser })
         user = updatedUser
     })
 
     it("should delete the user created earlier", async () => {
-        const deletedUser = await store.delete(user.id as unknown as number)
+        const deletedUser = await store.delete(user.id as string)
         expect(deletedUser).toEqual(user)
     })
 })

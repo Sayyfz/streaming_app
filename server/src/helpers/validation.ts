@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import { throwError } from "./error.helpers"
 class Validation {
     private column: { [x: string]: string | number }
