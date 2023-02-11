@@ -3,6 +3,7 @@ import { throwError } from "../helpers/error.helpers"
 import query from "../helpers/query.helpers"
 import { Movie } from "../types"
 import config from "../config"
+import { deleteImage } from "../utiles/filesController"
 
 export class MovieStore {
     // get all movies
@@ -66,23 +67,15 @@ export class MovieStore {
     async create(movie: Movie): Promise<Movie> {
         const connection = await db.connect()
         try {
-            const { name, release_date, poster_image } = movie
+            const { name } = movie
             const existsql = query.exist("movies", "name")
             const existMovie = await connection.query(existsql, [name])
             if (existMovie.rows[0].exist) {
                 throw Error("Movie name already exists")
             }
 
-            console.log("poster_image", poster_image)
-
-            const sql = `INSERT INTO movies ( name, release_date,poster_image ) 
-      values ($1, $2, $3) RETURNING *`
-
-            const result = await connection.query(sql, [
-                name,
-                release_date,
-                poster_image,
-            ])
+            const { sql, values } = query.insert("movies", [movie], ["*"])
+            const result = await connection.query(sql, [...values])
 
             return result.rows[0]
         } catch (error) {
@@ -99,7 +92,23 @@ export class MovieStore {
     async update(movie: Movie, id: string): Promise<Movie> {
         const connection = await db.connect()
         try {
-            const { name } = movie
+            const { name, poster_image } = movie
+
+            console.log("poster_image", poster_image)
+
+            if (poster_image) {
+                const sql = query.select(["poster_image"], "movies", [
+                    "poster_image",
+                ])
+                const result = await connection.query(sql, [poster_image])
+
+                console.log(
+                    "result.rows[0].poster_image",
+                    result.rows[0].poster_image
+                )
+
+                deleteImage(result.rows[0].poster_image)
+            }
 
             if (name) {
                 const existsql = query.exist("movies", "name")
@@ -134,11 +143,14 @@ export class MovieStore {
         const connection = await db.connect()
         try {
             const sql = query.delete("movies", ["*"])
-            console.log(sql)
+
             const result = await connection.query(sql, [id])
             if (!result.rows.length) {
                 throw Error("movie not found")
             }
+
+            deleteImage(result.rows[0].poster_image)
+
             return result.rows[0]
         } catch (error) {
             throwError(

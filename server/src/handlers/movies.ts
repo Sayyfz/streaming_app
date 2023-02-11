@@ -58,6 +58,7 @@ export const create = async (
         validation({ name: req.body.name }).isNotEmpty()
         validation({ release_date: req.body.release_date }).isNotEmpty()
         const file = req.file
+
         if (!file) {
             throwError("please upload poster image", 422)
         }
@@ -85,6 +86,21 @@ export const update = async (
     next: NextFunction
 ) => {
     try {
+        const data = req.body
+
+        console.log(req.body.name)
+
+        const file = req.file
+
+        console.log(file)
+
+        let poster_image
+        if (file) {
+            poster_image = await resizeImage(file.buffer, 300, 500, postersPath)
+
+            data.poster_image = poster_image
+        }
+
         const movie = await store.update(req.body, req.params.id)
         return res.status(200).json(movie)
     } catch (err) {
