@@ -73,10 +73,8 @@ export class MovieStore {
             if (existMovie.rows[0].exist) {
                 throw Error("Movie name already exists")
             }
-
             const { sql, values } = query.insert("movies", [movie], ["*"])
             const result = await connection.query(sql, [...values])
-
             return result.rows[0]
         } catch (error) {
             throwError(
@@ -94,19 +92,11 @@ export class MovieStore {
         try {
             const { name, poster_image } = movie
 
-            console.log("poster_image", poster_image)
-
             if (poster_image) {
                 const sql = query.select(["poster_image"], "movies", [
                     "poster_image",
                 ])
                 const result = await connection.query(sql, [poster_image])
-
-                console.log(
-                    "result.rows[0].poster_image",
-                    result.rows[0].poster_image
-                )
-
                 deleteImage(result.rows[0].poster_image)
             }
 
@@ -122,15 +112,13 @@ export class MovieStore {
 
             const result = await connection.query(sql, [...values, id])
 
-            console.log(result.rows.length)
-
             if (!result.rows.length) {
                 throw Error("Movie not found")
             }
             return result.rows[0]
         } catch (error) {
             throwError(
-                `Could not update product,  ${(error as Error).message}`,
+                `Could not update movie,  ${(error as Error).message}`,
                 422
             )
         } finally {
