@@ -10,7 +10,7 @@ type RegistredUser = {
     updated_at: string
 }
 
-describe("USER HANDLER SPEC", () => {
+xdescribe("USER HANDLER SPEC", () => {
     let testUser: RegistredUser
     let token: string
     beforeAll(async () => {

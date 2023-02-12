@@ -76,7 +76,6 @@ export class MovieStore {
 
             const { sql, values } = query.insert("movies", [movie], ["*"])
             const result = await connection.query(sql, [...values])
-
             return result.rows[0]
         } catch (error) {
             throwError(
@@ -94,19 +93,12 @@ export class MovieStore {
         try {
             const { name, poster_image } = movie
 
-            console.log("poster_image", poster_image)
-
             if (poster_image) {
                 const sql = query.select(["poster_image"], "movies", [
                     "poster_image",
                 ])
                 const result = await connection.query(sql, [poster_image])
-
-                console.log(
-                    "result.rows[0].poster_image",
-                    result.rows[0].poster_image
-                )
-
+                console.log(result.rows)
                 deleteImage(result.rows[0].poster_image)
             }
 
@@ -130,7 +122,7 @@ export class MovieStore {
             return result.rows[0]
         } catch (error) {
             throwError(
-                `Could not update product,  ${(error as Error).message}`,
+                `Could not update movie,  ${(error as Error).message}`,
                 422
             )
         } finally {
