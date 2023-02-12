@@ -7,7 +7,11 @@ CREATE TABLE IF NOT EXISTS movies_rating (
     CONSTRAINT movies_rating_users_foreign FOREIGN KEY (user_id) REFERENCES  users(id) ON DELETE CASCADE,
     CONSTRAINT movies_rating_movies_foreign FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
 );
-
+CREATE TABLE IF NOT EXISTS most_liked (
+    id SERIAL PRIMARY KEY, 
+    movie_id INT NOT NULL,
+    CONSTRAINT movies_rating_movies_foreign FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
+);
 
 
 INSERT INTO movies_rating (user_id, movie_id, rating, comment) values ('1', '1', 3,'nice'),
@@ -19,6 +23,33 @@ INSERT INTO movies_rating (user_id, movie_id, rating, comment) values ('1', '1',
 ('1', '3', 3,'nice'),('2', '3', 1,'nice'),('3', '3', 2,'nice'),('4', '3', 4,'nice'),
 ('5', '3', 3,'nice'),('6', '3', 1,'nice'),('7', '3', 3,'nice'),('8', '3', 1,'nice'),
 ('9', '3', 2,'nice'),('10', '3', 1,'nice');
+insert into most_liked(movie_id) values,
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(1),
+(2),
+(2),
+(2),
+(2),
+(2),
+(3)
+
 
 
 
