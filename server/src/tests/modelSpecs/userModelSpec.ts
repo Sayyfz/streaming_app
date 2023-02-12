@@ -1,7 +1,7 @@
 import UserStore from "../../models/users"
-import { User } from "../../types"
+import { FavouriteMovie, User } from "../../types"
 
-const store = new UserStore()
+const store = UserStore() //Singleton instance
 
 describe("USER SPEC", () => {
     let user: User
@@ -27,6 +27,16 @@ describe("USER SPEC", () => {
         expect(u).toEqual(user)
     })
 
+    it("should return a jwt token successfully", async () => {
+        const credentials = {
+            email: user.email,
+            password: "testsS1",
+        }
+
+        const newUser = await store.login(credentials)
+        expect(newUser?.email).toEqual(user.email)
+    })
+
     it("should update the user created earlier", async () => {
         const newUser = {
             email: "updated@gmail.com",
@@ -37,7 +47,18 @@ describe("USER SPEC", () => {
         user = updatedUser
     })
 
-    xit("should delete the user created earlier", async () => {
+    it("should add a movie to user's list of movies", async () => {
+        const userMovie: FavouriteMovie = {
+            user_id: "1",
+            movie_id: "4",
+        }
+        const createdUserMovie = await store.add_to_list(userMovie)
+
+        expect(createdUserMovie.user_id).toEqual(userMovie.user_id)
+        expect(createdUserMovie.movie_id).toEqual(userMovie.movie_id)
+    })
+
+    it("should delete the user created earlier", async () => {
         const deletedUser = await store.delete(user.id as string)
         expect(deletedUser).toEqual(user)
     })

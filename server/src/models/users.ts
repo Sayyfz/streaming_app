@@ -1,16 +1,10 @@
-import bcrypt from "bcrypt"
 import query from "../helpers/query.helpers"
-import config from "../config"
 import db from "../db"
 import { throwError } from "../helpers/error.helpers"
-import { User } from "../types"
+import { FavouriteMovie, User } from "../types"
+import { comparePassword, encodePassword } from "../helpers/encodePassword"
 
-const encodePassword = (password: string): string => {
-    const saltRound = parseInt(config.salt as string, 10)
-    return bcrypt.hashSync(`${password}${config.pepperKey}`, saltRound)
-}
-
-export class UserStore {
+class UserStore {
     async index(): Promise<User[]> {
         const conn = await db.connect()
         try {
@@ -96,7 +90,6 @@ export class UserStore {
                 ["id, email, created_at, updated_at"]
             )
             const result = await conn.query(sql, [...values, id])
-
             if (!result.rows.length) {
                 throw Error("User not found")
             }
@@ -137,15 +130,15 @@ export class UserStore {
 
             const result = await connection.query(sql, [user.email])
             if (!result.rows.length) {
-                throw Error("email not exist")
+                throw Error("email doesn't exist")
             }
             const { password: hashPassword } = result.rows[0]
-            const isPasswordValid = bcrypt.compareSync(
-                `${user.password}${config.pepperKey}`,
+            const isPasswordCorrect = comparePassword(
+                user.password,
                 hashPassword
             )
-            if (!isPasswordValid) {
-                throw Error("password not valid")
+            if (!isPasswordCorrect) {
+                throw Error("Incorrect password")
             }
             const userInfo = await connection.query(
                 "SELECT id, email  FROM users WHERE email=($1)",
@@ -162,6 +155,30 @@ export class UserStore {
             connection.release()
         }
     }
+
+    async add_to_list(userMovie: FavouriteMovie) {
+        const connection = await db.connect()
+        try {
+            const { sql } = query.insert("user_list", [userMovie], ["*"])
+            const result = await connection.query(sql, [
+                userMovie.user_id,
+                userMovie.movie_id,
+            ])
+            return result.rows[0]
+        } catch (err) {
+            throwError((err as Error).message, 422)
+        } finally {
+            connection.release()
+        }
+    }
 }
 
-export default UserStore
+const getInstance = (() => {
+    let instance: UserStore
+    return () => {
+        if (instance) return instance
+        return new UserStore()
+    }
+})()
+
+export default getInstance
