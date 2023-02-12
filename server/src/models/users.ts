@@ -80,19 +80,19 @@ export class UserStore {
 
     async update(user: User, id: string): Promise<User> {
         const conn = await db.connect()
-
         try {
             const existSql = query.exist("users", "email")
             const existResult = await conn.query(existSql, [user.email])
             if (existResult.rows[0].exist) {
                 throw Error("Email already exists")
             }
+            if (user.password) {
+                user.password = encodePassword(user.password as string)
+            }
 
-            const { sql, values } = query.update(
-                "users",
-                { ...user, password: encodePassword(user.password as string) },
-                ["id, email, created_at, updated_at"]
-            )
+            const { sql, values } = query.update("users", user, [
+                "id, email, created_at, updated_at",
+            ])
             const result = await conn.query(sql, [...values, id])
 
             if (!result.rows.length) {

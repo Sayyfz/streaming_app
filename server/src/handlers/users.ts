@@ -56,11 +56,11 @@ export const update = async (
 ) => {
     const { email, password } = req.body
     try {
-        validate({ email }).isEmail().isNotEmpty()
-        validate({ password }).passwordStrength().isNotEmpty()
+        validate({ email }).isEmail()
+        validate({ password }).passwordStrength()
 
-        const newUser = await store.update(req.body, res.locals.userId)
-        return res.status(200).json(newUser)
+        const user = await store.update(req.body, res.locals.userId)
+        return res.status(200).json(user)
     } catch (err) {
         next(err)
     }

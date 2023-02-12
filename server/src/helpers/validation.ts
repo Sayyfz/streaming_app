@@ -15,7 +15,9 @@ class Validation {
         }
         return this
     }
-    isEmail() {
+    isEmail(): this | undefined {
+        if (!this.value) return
+
         const validRegex =
             /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
@@ -24,7 +26,9 @@ class Validation {
         }
         return this
     }
-    passwordStrength(strong?: string) {
+    passwordStrength(strong?: string): this | undefined {
+        if (!this.value) return
+
         const strongRegex = strong
             ? strong
             : new RegExp("^(?=.*[a-z])(?=.*[0-9])")
@@ -34,21 +38,27 @@ class Validation {
         return this
     }
 
-    min(num: number) {
+    min(num: number): this | undefined {
+        if (!this.value) return
+
         if (this.value.toString().length < num) {
             throwError(`${this.key} must be >= ${num}`, 422)
         }
         return this
     }
 
-    max(num: number) {
+    max(num: number): this | undefined {
+        if (!this.value) return
+
         if (this.value.toString().length > num) {
             throwError(`${this.key} must be <= ${num}`, 422)
         }
         return this
     }
 
-    range(max: number, min: number) {
+    range(max: number, min: number): this | undefined {
+        if (!this.value) return
+
         if (
             this.value.toString().length > max ||
             this.value.toString().length < min
@@ -58,12 +68,15 @@ class Validation {
         return this
     }
 
-    isInt() {
+    isInt(): this | undefined {
+        if (!this.value) return
+
         if (/^\d+$/.test(this.value as string)) return this
         throwError(`${this.key} should be integer`, 422)
     }
 
-    isNotEmpty() {
+    isNotEmpty(): this | undefined {
+        if (!this.value) return
         if (this.value.toString().length == 0) {
             throwError(`please add valid value to ${this.key} `, 422)
         }
