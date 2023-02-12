@@ -73,7 +73,6 @@ export class MovieStore {
             if (existMovie.rows[0].exist) {
                 throw Error("Movie name already exists")
             }
-
             const { sql, values } = query.insert("movies", [movie], ["*"])
             const result = await connection.query(sql, [...values])
             return result.rows[0]
@@ -97,8 +96,8 @@ export class MovieStore {
                 const sql = query.select(["poster_image"], "movies", [
                     "poster_image",
                 ])
+                console.log(sql)
                 const result = await connection.query(sql, [poster_image])
-                console.log(result.rows)
                 deleteImage(result.rows[0].poster_image)
             }
 
