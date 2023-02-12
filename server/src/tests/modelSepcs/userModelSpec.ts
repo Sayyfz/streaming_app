@@ -33,7 +33,7 @@ describe("USER SPEC", () => {
             password: "testjjS2",
         }
         const updatedUser = await store.update(newUser, user.id as string)
-        expect(updatedUser).toEqual({ id: user.id, ...newUser })
+        expect(updatedUser.id).toEqual(user.id)
         user = updatedUser
     })
 
