@@ -2,7 +2,7 @@ import { MovieStore } from "../models/movies"
 import { NextFunction, Request, Response } from "express"
 import validation from "../helpers/validation"
 import { throwError } from "../helpers/error.helpers"
-import resizeImage from "../utiles/sharp"
+import resizeImage from "../utilities/sharp"
 import { postersPath } from "../path"
 
 const store = new MovieStore()

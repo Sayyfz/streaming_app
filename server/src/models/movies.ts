@@ -3,7 +3,7 @@ import { throwError } from "../helpers/error.helpers"
 import query from "../helpers/query.helpers"
 import { Movie } from "../types"
 import config from "../config"
-import { deleteImage } from "../utiles/filesController"
+import { deleteImage } from "../utilities/filesController"
 
 export class MovieStore {
     // get all movies

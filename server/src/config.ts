@@ -1,6 +1,6 @@
-import dotnv from "dotenv"
+import dotenv from "dotenv"
 
-dotnv.config()
+dotenv.config()
 const {
     NODE_ENV,
     SECRET_BCYPT_KEY,
