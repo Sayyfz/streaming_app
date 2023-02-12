@@ -4,7 +4,7 @@ import { Movie } from "../../types"
 
 const requester = supertest(app)
 
-fdescribe("MOVIE HANDLER SPEC", () => {
+describe("MOVIE HANDLER SPEC", () => {
     let testMovie: Movie
     const testImagePath = "testImages/1.jpg"
     beforeAll(async () => {
