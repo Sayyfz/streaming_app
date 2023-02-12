@@ -96,7 +96,6 @@ export class MovieStore {
                 const sql = query.select(["poster_image"], "movies", [
                     "poster_image",
                 ])
-                console.log(sql)
                 const result = await connection.query(sql, [poster_image])
                 deleteImage(result.rows[0].poster_image)
             }
@@ -112,8 +111,6 @@ export class MovieStore {
             const { sql, values } = query.update("movies", movie, ["*"])
 
             const result = await connection.query(sql, [...values, id])
-
-            console.log(result.rows.length)
 
             if (!result.rows.length) {
                 throw Error("Movie not found")
