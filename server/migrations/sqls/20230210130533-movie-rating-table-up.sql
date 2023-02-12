@@ -18,7 +18,7 @@ INSERT INTO movies_rating (user_id, movie_id, rating, comment) values ('1', '1',
 ('8', '2', 1,'nice'),('9', '2', 1,'nice'),('10', '2', 1,'nice'),
 ('1', '3', 3,'nice'),('2', '3', 1,'nice'),('3', '3', 2,'nice'),('4', '3', 4,'nice'),
 ('5', '3', 3,'nice'),('6', '3', 1,'nice'),('7', '3', 3,'nice'),('8', '3', 1,'nice'),
-('9', '3', 2,'nice'),('10', '3', 1,'nice')
+('9', '3', 2,'nice'),('10', '3', 1,'nice');
 
 
 

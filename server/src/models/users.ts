@@ -40,7 +40,11 @@ export class UserStore {
                 throw Error("Email already exists")
             }
 
-            const insertSql = query.insert("users", [user], ["id, email"])
+            const insertSql = query.insert(
+                "users",
+                [user],
+                ["id, email, created_at, updated_at"]
+            )
             const result = await db.query(insertSql.sql, [
                 user.email,
                 encodePassword(user.password as string),
@@ -57,8 +61,6 @@ export class UserStore {
     async show(id: string): Promise<User> {
         const conn = await db.connect()
         try {
-            console.log("id", id)
-
             const sql = query.select(
                 ["id, email, created_at, updated_at"],
                 "users",
