@@ -173,12 +173,6 @@ class UserStore {
     }
 }
 
-const getInstance = (() => {
-    let instance: UserStore
-    return () => {
-        if (instance) return instance
-        return new UserStore()
-    }
-})()
+const user = new UserStore()
 
-export default getInstance
+export default user

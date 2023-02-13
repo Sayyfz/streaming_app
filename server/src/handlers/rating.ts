@@ -1,17 +1,6 @@
-import RatingStore from "../models/rating"
+import store from "../models/rating"
 import { NextFunction, Request, Response } from "express"
 import validate from "../helpers/validation"
-
-const store = RatingStore() //Singleton Instance
-
-export const show = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const rating = await store.show(req.params.id)
-        return res.status(200).json(rating)
-    } catch (err) {
-        next(err)
-    }
-}
 
 export const create = async (
     req: Request,

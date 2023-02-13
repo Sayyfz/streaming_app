@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from "express"
-import UserStore from "../models/user"
+import store from "../models/user"
 import jwt from "jsonwebtoken"
 import validate from "../helpers/validation"
 import config from "../config"
-
-const store = UserStore() //Singleton instance
 
 export const index = async (
     _req: Request,

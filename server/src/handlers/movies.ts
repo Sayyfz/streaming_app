@@ -1,11 +1,9 @@
-import { MovieStore } from "../models/movie"
+import store from "../models/movie"
 import { NextFunction, Request, Response } from "express"
 import validation from "../helpers/validation"
 import { throwError } from "../helpers/error.helpers"
 import resizeImage from "../utilities/sharp"
 import { postersPath } from "../path"
-
-const store = new MovieStore()
 
 export const index = async (
     req: Request,
