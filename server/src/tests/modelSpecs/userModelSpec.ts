@@ -1,7 +1,7 @@
-import userStore from "../../models/users"
+import { UserStore } from "../../models/users"
 import { User } from "../../types"
 
-const store = userStore()
+const store = new UserStore()
 
 describe("USER SPEC", () => {
     let user: User
