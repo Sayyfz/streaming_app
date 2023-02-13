@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken"
 import validate from "../helpers/validation"
 import config from "../config"
 
-const store = UserStore() //Singleton instance
+const store = new UserStore() //Singleton instance
 
 export const index = async (
     _req: Request,
@@ -88,11 +88,11 @@ export const login = async (
         const user = await store.login(req.body)
 
         const token = jwt.sign(
-            { id: user?.id },
+            { id: user.id },
             config.tokenSecretKey as unknown as string
         )
 
-        return res.status(200).json(token)
+        return res.status(200).json({ token })
     } catch (err) {
         return next(err)
     }
@@ -108,7 +108,7 @@ export const addToList = async (
             user_id: res.locals.userId,
             movie_id: req.body.movie_id,
         }
-        validate({ id: req.body.movie_id }).isNotEmpty().isNum()
+        validate({ id: req.body.movie_id }).isNotEmpty()?.isNum()
         const movie = await store.add_to_list(userMovie)
         return res.status(200).json(movie)
     } catch (err) {

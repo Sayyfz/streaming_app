@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS movies_rating (
     CONSTRAINT movies_rating_movies_foreign FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
     UNIQUE(user_id, movie_id)
 );
+
 CREATE TABLE IF NOT EXISTS most_liked (
     id SERIAL PRIMARY KEY, 
     movie_id INT NOT NULL,

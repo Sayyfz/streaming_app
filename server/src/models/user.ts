@@ -123,10 +123,10 @@ class UserStore {
     }
 
     // login
-    async login(user: User): Promise<User | null> {
+    async login(user: User): Promise<User> {
         const connection = await db.connect()
         try {
-            const sql = "SELECT password FROM users WHERE email=$1"
+            const sql = query.select(["password"], "users", ["email"])
 
             const result = await connection.query(sql, [user.email])
             if (!result.rows.length) {
@@ -140,10 +140,10 @@ class UserStore {
             if (!isPasswordCorrect) {
                 throw Error("Incorrect password")
             }
-            const userInfo = await connection.query(
-                "SELECT id, email  FROM users WHERE email=($1)",
-                [user.email]
-            )
+
+            const sqlInfo = query.select(["id", "email"], "users", ["email"])
+
+            const userInfo = await connection.query(sqlInfo, [user.email])
             return userInfo.rows[0]
         } catch (error) {
             throw {
@@ -173,12 +173,4 @@ class UserStore {
     }
 }
 
-const getInstance = (() => {
-    let instance: UserStore
-    return () => {
-        if (instance) return instance
-        return new UserStore()
-    }
-})()
-
-export default getInstance
+export default UserStore

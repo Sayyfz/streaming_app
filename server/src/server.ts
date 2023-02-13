@@ -13,12 +13,14 @@ const app: express.Application = express()
 const port = process.env.PORT || 5000
 
 //Third Party Middlewares
-app.use(cors());
+app.use(cors())
+
+
 
 // Middleware to parses incoming requests with JSON payloads and is based on body-parser.
-app.use(express.json());
+app.use(express.json())
 
-app.use(express.static(path.join(__dirname, "./public")));
+app.use(express.static(path.join(__dirname, "./public")))
 
 //Endpoints Routes
 app.use("/api", routes)
@@ -39,5 +41,6 @@ app.use((_req: Request, res: Response, Next: NextFunction) => {
 app.use(errorMiddleware)
 
 app.listen(port, function () {
-  console.log(`Listening on port ${port}`);
-});
+    console.log(`Listening on port ${port}`)
+})
+export default app

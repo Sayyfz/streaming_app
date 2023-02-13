@@ -2,7 +2,7 @@ import RatingStore from "../models/rating"
 import { NextFunction, Request, Response } from "express"
 import validate from "../helpers/validation"
 
-const store = RatingStore() //Singleton Instance
+const store = new RatingStore() //Singleton Instance
 
 export const create = async (
     req: Request,

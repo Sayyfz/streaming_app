@@ -4,6 +4,7 @@ import query from "../helpers/query.helpers"
 import { Movie } from "../types"
 import config from "../config"
 import { deleteImage } from "../utilities/filesController"
+import { postersPath } from "../path"
 
 export class MovieStore {
     // get all movies
@@ -92,12 +93,13 @@ export class MovieStore {
         try {
             const { name, poster_image } = movie
 
+            console.log("poster_image", poster_image)
+
             if (poster_image) {
-                const sql = query.select(["poster_image"], "movies", [
-                    "poster_image",
-                ])
-                const result = await connection.query(sql, [poster_image])
-                deleteImage(result.rows[0].poster_image)
+                const sql = query.select(["poster_image"], "movies", ["id"])
+                const result = await connection.query(sql, [id])
+                const filePath = `${postersPath}/${result.rows[0].poster_image}`
+                deleteImage(filePath)
             }
 
             if (name) {
@@ -117,6 +119,11 @@ export class MovieStore {
             }
             return result.rows[0]
         } catch (error) {
+            if (movie.poster_image) {
+                const filePath = `${postersPath}/${movie.poster_image}`
+                deleteImage(filePath)
+            }
+
             throwError(
                 `Could not update movie,  ${(error as Error).message}`,
                 422
@@ -136,8 +143,9 @@ export class MovieStore {
             if (!result.rows.length) {
                 throw Error("movie not found")
             }
+            const filePath = `${postersPath}/${result.rows[0].poster_image}`
 
-            deleteImage(result.rows[0].poster_image)
+            deleteImage(filePath)
 
             return result.rows[0]
         } catch (error) {
@@ -151,12 +159,4 @@ export class MovieStore {
     }
 }
 
-const getInstance = (() => {
-    let instance: MovieStore
-    return () => {
-        if (instance) return instance
-        return new MovieStore()
-    }
-})()
-
-export default getInstance
+export default MovieStore

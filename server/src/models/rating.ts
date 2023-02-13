@@ -27,12 +27,5 @@ export class RatingStore {
     }
 }
 
-const getInstance = (() => {
-    let instance: RatingStore
-    return () => {
-        if (instance) return instance
-        return new RatingStore()
-    }
-})()
 
-export default getInstance
+export default RatingStore

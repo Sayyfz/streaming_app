@@ -37,12 +37,5 @@ export class LikeStore {
     }
 }
 
-const getInstance = (() => {
-    let instance: LikeStore
-    return () => {
-        if (instance) return instance
-        return new LikeStore()
-    }
-})()
 
-export default getInstance
+export default LikeStore

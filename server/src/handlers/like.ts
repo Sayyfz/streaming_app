@@ -1,7 +1,7 @@
 import Like from "../models/like"
 import { NextFunction, Request, Response } from "express"
 
-const store = Like() //Singleton instance
+const store = new Like() //Singleton instance
 
 export const index = async (
     req: Request,

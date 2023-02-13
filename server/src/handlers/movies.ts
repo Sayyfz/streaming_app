@@ -92,10 +92,12 @@ export const update = async (
         let poster_image
         if (file) {
             poster_image = await resizeImage(file.buffer, 300, 500, postersPath)
-            data.poster_image = poster_image
+            data["poster_image"] = poster_image
         }
 
-        const movie = await store.update(req.body, req.params.id)
+        console.log(data)
+
+        const movie = await store.update(data, req.params.id)
         return res.status(200).json(movie)
     } catch (err) {
         next(err)
