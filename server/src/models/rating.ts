@@ -6,14 +6,15 @@ export class RatingStore {
     async create(r: Rating): Promise<Rating> {
         const connection = await db.connect()
         try {
-            const { user_id, movie_id, rating, comment } = r
-            const sql = `INSERT INTO movies_rating (user_id, movie_id, rating, comment ) 
-                          VALUES ($1, $2, $3, $4) RETURNING *`
+            const { user_id, movie_id, rating, comment, is_liked } = r
+            const sql = `INSERT INTO movies_rating (user_id, movie_id, rating, comment, is_liked) 
+                          VALUES ($1, $2, $3, $4, $5) RETURNING *`
             const result = await connection.query(sql, [
                 user_id,
                 movie_id,
                 rating,
                 comment,
+                is_liked,
             ])
 
             return result.rows[0]

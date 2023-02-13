@@ -1,13 +1,13 @@
 import express from "express"
-import usersRoutes from "./api/user"
-import moviesRoutes from "./api/movie"
-import ratingRoutes from "./api/rating"
-import likesRoutes from "./api/like"
+import usersRoutes from "./api/userRoute"
+import moviesRoutes from "./api/movieRoute"
+import ratingRoutes from "./api/ratingRoute"
+import dashboardRoute from "./api/dashboardRoute"
 
 const routes = express.Router()
 
 routes.use("/users", usersRoutes)
 routes.use("/movies", moviesRoutes)
 routes.use("/rating", ratingRoutes)
-routes.use("/most_liked", likesRoutes)
+routes.use("/dashboard", dashboardRoute)
 export default routes
