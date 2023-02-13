@@ -4,6 +4,7 @@ type Rating = {
     movie_id: number
     rating: number
     comment: string
+    is_liked: boolean
 }
 
 export default Rating
