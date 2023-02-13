@@ -238,7 +238,7 @@ This streaming app API allows for performing CRUD operations on movies/users/mov
 
     id: number (auto-generated)
     name: string
-    poster_image: string (poster_image is a string, however, you should enter it with a key called "image" as a 	file and not a string)
+    poster_image: string (poster_image is a string, however, you should enter it with a key called "image" as a file and not a string)
     rating: number
     created_at: date (auto-generated)
     updated_at: date (auto-generated)
