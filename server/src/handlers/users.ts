@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express"
-import { UserStore } from "../models/users"
+import UserStore from "../models/user"
 import jwt from "jsonwebtoken"
 import validate from "../helpers/validation"
 import config from "../config"
 
-const store = new UserStore()
+const store = UserStore() //Singleton instance
 
 export const index = async (
     _req: Request,
@@ -88,13 +88,29 @@ export const login = async (
         const user = await store.login(req.body)
 
         const token = jwt.sign(
-            { user },
+            { id: user?.id },
             config.tokenSecretKey as unknown as string
         )
-        return res.status(200).json({
-            ...user,
-            token,
-        })
+
+        return res.status(200).json(token)
+    } catch (err) {
+        return next(err)
+    }
+}
+
+export const addToList = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const userMovie = {
+            user_id: res.locals.userId,
+            movie_id: req.body.movie_id,
+        }
+        validate({ id: req.body.movie_id }).isNotEmpty().isNum()
+        const movie = await store.add_to_list(userMovie)
+        return res.status(200).json(movie)
     } catch (err) {
         return next(err)
     }

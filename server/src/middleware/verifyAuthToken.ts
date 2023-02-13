@@ -8,14 +8,14 @@ const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
         const authHeader = req.headers.authorization as string
 
         if (!authHeader) {
-            throw Error("please login")
+            throw Error("Please login")
         }
         const token = authHeader.split(" ")[1]
         const decoded = jwt.verify(
             token,
             config.tokenSecretKey as string
         ) as JwtPayload
-        res.locals.userId = decoded.user.id
+        res.locals.userId = decoded.id
         next()
     } catch (err) {
         return res.status(401).json(`An error occurred: ${err}`)

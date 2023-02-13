@@ -1,8 +1,8 @@
-import { MovieStore } from "../models/movies"
+import { MovieStore } from "../models/movie"
 import { NextFunction, Request, Response } from "express"
 import validation from "../helpers/validation"
 import { throwError } from "../helpers/error.helpers"
-import resizeImage from "../utiles/sharp"
+import resizeImage from "../utilities/sharp"
 import { postersPath } from "../path"
 
 const store = new MovieStore()
@@ -60,7 +60,7 @@ export const create = async (
         const file = req.file
 
         if (!file) {
-            throwError("please upload poster image", 422)
+            throwError("Please upload poster image", 422)
         }
 
         const poster_image = await resizeImage(
@@ -87,17 +87,11 @@ export const update = async (
 ) => {
     try {
         const data = req.body
-
-        console.log(req.body.name)
-
         const file = req.file
-
-        console.log(file)
 
         let poster_image
         if (file) {
             poster_image = await resizeImage(file.buffer, 300, 500, postersPath)
-
             data.poster_image = poster_image
         }
 

@@ -74,11 +74,18 @@ class Validation {
         if (/^\d+$/.test(this.value as string)) return this
         throwError(`${this.key} should be integer`, 422)
     }
+    isNum() {
+        if (isNaN(+this.value)) {
+            throwError(`${this.key} should be a valid number`, 422)
+        }
+
+        return this
+    }
 
     isNotEmpty(): this | undefined {
         if (!this.value) return
         if (this.value.toString().length == 0) {
-            throwError(`please add valid value to ${this.key} `, 422)
+            throwError(`Please add valid value to ${this.key} `, 422)
         }
         return this
     }

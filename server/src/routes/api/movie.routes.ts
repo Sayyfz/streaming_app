@@ -1,6 +1,6 @@
 import { Router } from "express"
 import * as controllers from "../../handlers/movies"
-import upload from "../../utiles/multer"
+import upload from "../../utilities/multer"
 
 const moviesRoute = Router()
 
