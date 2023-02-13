@@ -11,7 +11,7 @@
 
 <!-- Screenshots -->
 
-### :camera: Screenshots
+<!-- ### :camera: Screenshots -->
 
 <!-- <div align="center">
   <img src="screenshots/1.jpg" alt="screenshot" />
