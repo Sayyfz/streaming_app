@@ -2,7 +2,7 @@ import RatingStore from "../../models/rating"
 
 const store = RatingStore()
 
-fdescribe("RATING MODEL SPEC", () => {
+describe("RATING MODEL SPEC", () => {
     it("should get ratings of a movie that has the id of 2", async () => {
         const ratings = await store.show(2)
         ratings.forEach((rating) => expect(rating.movie_id).toEqual(2))

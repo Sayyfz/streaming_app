@@ -1,8 +1,8 @@
 import express from "express"
-import usersRoutes from "./api/user.routes"
-import moviesRoutes from "./api/movie.routes"
-import ratingRoutes from "./api/rating.routes"
-import likesRoutes from "./api/like.routes"
+import usersRoutes from "./api/user"
+import moviesRoutes from "./api/movie"
+import ratingRoutes from "./api/rating"
+import likesRoutes from "./api/like"
 
 const routes = express.Router()
 

@@ -1,6 +1,6 @@
-type liked = {
+type Liked = {
     id?: string
     movie_id: number
 }
 
-export default liked
+export default Liked
