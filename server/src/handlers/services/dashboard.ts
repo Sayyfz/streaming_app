@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import DashboardQueries from "../../models/dashboard"
-
-const store = DashboardQueries() //Singleton instance
+import store from "../../models/dashboard"
 
 export const getMostLiked = async (
     req: Request,

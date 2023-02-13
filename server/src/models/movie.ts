@@ -135,6 +135,7 @@ export class MovieStore {
     async delete(id: string): Promise<Movie> {
         const connection = await db.connect()
         try {
+            await db.query("BEGIN")
             const sql = query.delete("movies", ["*"])
 
             const result = await connection.query(sql, [id])
@@ -142,10 +143,13 @@ export class MovieStore {
                 throw Error("movie not found")
             }
 
-            deleteImage(result.rows[0].poster_image)
+            const filePath = `${postersPath}/${result.rows[0].poster_image}`
+            deleteImage(filePath)
 
+            await db.query("BEGIN")
             return result.rows[0]
         } catch (error) {
+            await db.query("ROLLBACK")
             throwError(
                 `Could not delete movie,  ${(error as Error).message}`,
                 422

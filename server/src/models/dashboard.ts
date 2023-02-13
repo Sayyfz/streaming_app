@@ -20,12 +20,6 @@ class DashboardQueries {
     }
 }
 
-const getInstance = (() => {
-    let instance: DashboardQueries
-    return () => {
-        if (instance) return instance
-        return new DashboardQueries()
-    }
-})()
+const dashboard = new DashboardQueries()
 
-export default getInstance
+export default dashboard

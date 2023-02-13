@@ -1,12 +1,7 @@
-import { postersPath } from "../path"
 import fs from "fs"
 
-export const deleteImage = (filename: string): void => {
-    const file = `${postersPath}/${filename}`
-
-    console.log(file)
-
-    if (!fs.existsSync(file)) {
+export const deleteImage = (filePath: string): void => {
+    if (!fs.existsSync(filePath)) {
         throw {
             message: ` image not found `,
             status: 404,
@@ -14,7 +9,7 @@ export const deleteImage = (filename: string): void => {
         }
     }
 
-    fs.unlink(file, (err) => {
+    fs.unlink(filePath, (err) => {
         if (err) throw err
     })
 }
