@@ -61,7 +61,6 @@ class UserStore {
                 ["id"]
             )
             const result = await conn.query(sql, [id])
-
             if (!result.rows.length) {
                 throw Error("User does not exist")
             }

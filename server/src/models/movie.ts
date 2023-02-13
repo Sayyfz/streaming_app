@@ -146,7 +146,7 @@ export class MovieStore {
             const filePath = `${postersPath}/${result.rows[0].poster_image}`
             deleteImage(filePath)
 
-            await db.query("BEGIN")
+            await db.query("COMMIT")
             return result.rows[0]
         } catch (error) {
             await db.query("ROLLBACK")

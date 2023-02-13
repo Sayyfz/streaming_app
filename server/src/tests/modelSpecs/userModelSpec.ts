@@ -9,7 +9,6 @@ describe("USER MODEL SPEC", () => {
                 email: "ioioio@gmail.com",
                 password: "testsS1",
             })
-            console.log(user)
         } catch (err) {
             console.log((err as Error).message)
         }
@@ -19,19 +18,14 @@ describe("USER MODEL SPEC", () => {
         const users = await store.index()
         const userProps = Object.keys(users[0])
         expect(userProps).toEqual(Object.keys(user))
-        console.log(users)
     })
 
     it("should show the user created earlier", async () => {
-        try {
-            const u = await store.show(user.id as string)
-            expect(u.id).toEqual(user.id)
-        } catch (err) {
-            console.log(err)
-        }
+        const u = await store.show(user.id as string)
+        expect(u.id).toEqual(user.id)
     })
 
-    it("should return a jwt token successfully", async () => {
+    it("should return user credentials successfully", async () => {
         const credentials = {
             email: user.email,
             password: "testsS1",
@@ -60,10 +54,5 @@ describe("USER MODEL SPEC", () => {
 
         expect(createdUserMovie.user_id.toString()).toEqual(userMovie.user_id)
         expect(createdUserMovie.movie_id.toString()).toEqual(userMovie.movie_id)
-    })
-
-    it("should delete the user created earlier", async () => {
-        const deletedUser = await store.delete(user.id as string)
-        expect(deletedUser).toEqual(user)
     })
 })

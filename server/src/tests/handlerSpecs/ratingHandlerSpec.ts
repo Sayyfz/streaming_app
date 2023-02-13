@@ -22,6 +22,20 @@ describe("RATING HANDLER SPEC", () => {
         token = `Bearer ${loginRes.body}`
     })
 
+    it("should return error indicating that the range must be between 1-5", async () => {
+        await requester
+            .post("/api/rating/")
+            .send({
+                movie_id: 4,
+                rating: 6,
+                comment: "Great",
+                is_liked: false,
+            })
+            .set("Authorization", token)
+            .expect(422)
+            .expect("Content-Type", /json/)
+    })
+
     it("should create a rating successfully", async () => {
         const res = await requester
             .post("/api/rating/")
