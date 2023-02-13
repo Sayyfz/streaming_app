@@ -1,4 +1,4 @@
-import UserStore from "../../models/users"
+import UserStore from "../../models/user"
 import { FavouriteMovie, User } from "../../types"
 
 const store = UserStore() //Singleton instance

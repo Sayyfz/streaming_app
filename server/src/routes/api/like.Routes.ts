@@ -1,8 +1,8 @@
-import { Router } from "express";
-import * as controllers from "../../handlers/like";
+import { Router } from "express"
+import * as controllers from "../../handlers/like"
 
-const LikeRoute = Router();
+const LikeRoute = Router()
 
-LikeRoute.post("/", controllers.create);
-LikeRoute.get("/", controllers.getall);
-export default LikeRoute;
+LikeRoute.post("/", controllers.create)
+LikeRoute.get("/", controllers.index)
+export default LikeRoute

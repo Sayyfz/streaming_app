@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import UserStore from "../models/users"
+import UserStore from "../models/user"
 import jwt from "jsonwebtoken"
 import validate from "../helpers/validation"
 import config from "../config"

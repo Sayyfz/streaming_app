@@ -1,4 +1,4 @@
-import MovieStore from "../../models/movies"
+import MovieStore from "../../models/movie"
 import { postersPath } from "../../path"
 import { Movie } from "../../types"
 import resizeImage from "../../utilities/sharp"
