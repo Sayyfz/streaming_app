@@ -4,6 +4,15 @@ import validate from "../helpers/validation"
 
 const store = RatingStore() //Singleton Instance
 
+export const show = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const rating = await store.show(req.params.id)
+        return res.status(200).json(rating)
+    } catch (err) {
+        next(err)
+    }
+}
+
 export const create = async (
     req: Request,
     res: Response,

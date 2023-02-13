@@ -5,7 +5,7 @@ import resizeImage from "../../utilities/sharp"
 
 const store = MovieStore()
 
-fdescribe("MOVIE MODEL SPEC", () => {
+describe("MOVIE MODEL SPEC", () => {
     let testMovie: Movie
     const testImagePath = "testImages/1.jpg"
     beforeAll(async () => {
