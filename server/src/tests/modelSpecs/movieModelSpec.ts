@@ -1,9 +1,7 @@
-import MovieStore from "../../models/movie"
+import store from "../../models/movie"
 import { postersPath } from "../../path"
 import { Movie } from "../../types"
 import resizeImage from "../../utilities/sharp"
-
-const store = MovieStore()
 
 describe("MOVIE MODEL SPEC", () => {
     let testMovie: Movie

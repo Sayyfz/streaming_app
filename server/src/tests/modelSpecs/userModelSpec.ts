@@ -1,7 +1,5 @@
-import UserStore from "../../models/user"
+import store from "../../models/user"
 import { FavouriteMovie, User } from "../../types"
-
-const store = UserStore() //Singleton instance
 
 describe("USER SPEC", () => {
     let user: User

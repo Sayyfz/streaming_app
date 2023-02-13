@@ -9,10 +9,12 @@ export const create = async (
 ) => {
     try {
         validate({ rating: req.body.rating }).isNum()
-        validate({ userId: req.body.user_id }).isNum()
         validate({ movieId: req.body.movie_id }).isNum()
 
-        const rating = await store.create(req.body)
+        const rating = await store.create({
+            ...req.body,
+            user_id: res.locals.userId,
+        })
         return res.status(201).json(rating)
     } catch (err) {
         next(err)
