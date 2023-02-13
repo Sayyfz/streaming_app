@@ -206,13 +206,13 @@ This streaming app API allows for performing CRUD operations on movies/users/mov
 
 <br /> **GET** /api/movies?page=(page-number)&limit=(movie-count-in-page) to get all movies (uses pagination)
 <br /> <br /> **GET** /api/movies/:id to get a specific movie using the id
-<br /> <br /> **POST** /api/movies to create a new movie (check data shapes for request body info)
-<br /> <br /> **DELETE** /api/movies/:id to delete the movie with the specified id
+<br /> <br /> **POST** /api/movies to create a new movie (token required) (check data shapes for request body info)
+<br /> <br /> **PATCH** /api/movies/:id to update the movie with the specified id (token required)
+<br /> <br /> **DELETE** /api/movies/:id to delete the movie with the specified id (token required)
 <br /><br />
 
 #### **Ratings Route**
 
-<br /> **GET** /api/ratings/movies/:id to get ratings of a the specified movie id
 <br /><br /> **POST** /api/ratings to create a rating (check data shapes for request body info)
 <br />
 <br />
@@ -241,13 +241,12 @@ This streaming app API allows for performing CRUD operations on movies/users/mov
     rating: number
     created_at: date (auto-generated)
     updated_at: date (auto-generated)
-    count: number (auto-generated)
-    full_count: number (auto-generated)
 
 #### **Rating**
 
     id: number (auto-generated)
-    user_id: number
+    user_id: number (auto-generated from token "DO NOT ENTER ITS VALUE IN REQUEST BODY")
     movie_id: number
     rating: number,
-    comment: string
+    comment: string,
+    is_liked: boolean
