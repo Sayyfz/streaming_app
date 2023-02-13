@@ -1,13 +1,27 @@
 import supertest from "supertest"
 import app from "../../server"
-import { Movie } from "../../types"
+import { Movie, RegistredUser } from "../../types"
 
 const requester = supertest(app)
 
 describe("MOVIE HANDLER SPEC", () => {
     let testMovie: Movie
     const testImagePath = "testImages/1.jpg"
+    let testUser: RegistredUser
+    let token: string
     beforeAll(async () => {
+        const registerRes = await requester.post("/api/users").send({
+            email: "testinga1kjasn011ajsd23123KSAK92@yahoo.com",
+            password: "tesSt21",
+        })
+        testUser = registerRes.body
+
+        const loginRes = await requester.post("/api/users/auth").send({
+            email: testUser.email,
+            password: "tesSt21",
+        })
+        token = `Bearer ${loginRes.body}`
+
         const movieInfo = {
             name: "Test Movie",
             release_date: "29-03-2022",
@@ -15,6 +29,7 @@ describe("MOVIE HANDLER SPEC", () => {
         try {
             const res = await requester
                 .post("/api/movies/")
+                .set("Authorization", token)
                 .field(movieInfo)
                 .attach("image", testImagePath)
                 .expect(201)
@@ -41,6 +56,13 @@ describe("MOVIE HANDLER SPEC", () => {
         expect(res.body.name).toEqual(testMovie.name)
     })
 
+    it("should return unauthorized error with status 401 (can't update movie)", async () => {
+        await requester
+            .patch(`/api/movies/${testMovie.id}`)
+            .set("Authorization", "sasasa")
+            .expect(401)
+    })
+
     it("should update the movie created earlier", async () => {
         const newMovieInfo = {
             name: "Updated Name",
@@ -48,10 +70,10 @@ describe("MOVIE HANDLER SPEC", () => {
         }
         const res = await requester
             .patch(`/api/movies/${testMovie.id}`)
+            .set("Authorization", token)
             .field(newMovieInfo)
             .attach("image", testImagePath)
 
-        console.log(res.body)
         expect(res.status).toEqual(200)
         expect(res.body.id).toBeTruthy()
         expect(res.body.name).toEqual(newMovieInfo.name)
@@ -59,9 +81,17 @@ describe("MOVIE HANDLER SPEC", () => {
         testMovie = res.body
     })
 
+    it("should return unauthorized error with status 401 (can't delete movie)", async () => {
+        await requester
+            .delete(`/api/movies/${testMovie.id}`)
+            .set("Authorization", "sasasa")
+            .expect(401)
+    })
+
     it("should delete the movie created earlier", async () => {
         const res = await requester
             .delete(`/api/movies/${testMovie.id}`)
+            .set("Authorization", token)
             .expect(200)
 
         expect(res.body.id).toEqual(testMovie.id)

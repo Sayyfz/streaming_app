@@ -8,7 +8,7 @@ export const create = async (
     next: NextFunction
 ) => {
     try {
-        validate({ rating: req.body.rating }).isNum()
+        validate({ rating: req.body.rating }).isNum().range(5, 1)
         validate({ movieId: req.body.movie_id }).isNum()
 
         const rating = await store.create({

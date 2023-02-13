@@ -14,7 +14,7 @@
         "create": "db-migrate db:create",
         "drop": "db-migrate db:drop",
         "reset": "db-migrate reset",
-        "test": "set NODE_ENV=test&& db-migrate --env test reset && db-migrate --env test up && jasmine-ts ",
+        "test": "Set NODE_ENV=test&& db-migrate --env test reset && db-migrate --env test up && npm run build && jasmine",
         "test-dev": "npm run build && npm run jasmine",
         "lint": "eslint src/*.ts src/**/*.ts",
         "format": "prettier --config .prettierrc src/*.ts src/**/*.ts --write"

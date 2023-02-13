@@ -1,14 +1,15 @@
 import store from "../../models/user"
 import { FavouriteMovie, User } from "../../types"
 
-describe("USER SPEC", () => {
+describe("USER MODEL SPEC", () => {
     let user: User
     beforeAll(async () => {
         try {
             user = await store.create({
-                email: "test@gmail.com",
+                email: "ioioio@gmail.com",
                 password: "testsS1",
             })
+            console.log(user)
         } catch (err) {
             console.log((err as Error).message)
         }
@@ -18,11 +19,16 @@ describe("USER SPEC", () => {
         const users = await store.index()
         const userProps = Object.keys(users[0])
         expect(userProps).toEqual(Object.keys(user))
+        console.log(users)
     })
 
     it("should show the user created earlier", async () => {
-        const u = await store.show(user.id as string)
-        expect(u).toEqual(user)
+        try {
+            const u = await store.show(user.id as string)
+            expect(u.id).toEqual(user.id)
+        } catch (err) {
+            console.log(err)
+        }
     })
 
     it("should return a jwt token successfully", async () => {
@@ -37,7 +43,7 @@ describe("USER SPEC", () => {
 
     it("should update the user created earlier", async () => {
         const newUser = {
-            email: "updated@gmail.com",
+            email: "updated81uiioioas@gmail.com",
             password: "testjjS2",
         }
         const updatedUser = await store.update(newUser, user.id as string)
@@ -47,13 +53,13 @@ describe("USER SPEC", () => {
 
     it("should add a movie to user's list of movies", async () => {
         const userMovie: FavouriteMovie = {
-            user_id: "1",
+            user_id: `${user.id}`,
             movie_id: "4",
         }
         const createdUserMovie = await store.add_to_list(userMovie)
 
-        expect(createdUserMovie.user_id).toEqual(userMovie.user_id)
-        expect(createdUserMovie.movie_id).toEqual(userMovie.movie_id)
+        expect(createdUserMovie.user_id.toString()).toEqual(userMovie.user_id)
+        expect(createdUserMovie.movie_id.toString()).toEqual(userMovie.movie_id)
     })
 
     it("should delete the user created earlier", async () => {

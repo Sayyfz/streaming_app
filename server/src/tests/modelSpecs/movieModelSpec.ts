@@ -36,7 +36,7 @@ describe("MOVIE MODEL SPEC", () => {
         expect(movie.release_date).toEqual(testMovie.release_date)
     })
 
-    xit("should update the movie created earlier", async () => {
+    it("should update the movie created earlier", async () => {
         const poster_image = await resizeImage(
             testImagePath,
             300,

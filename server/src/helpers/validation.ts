@@ -49,10 +49,7 @@ class Validation {
     }
 
     range(max: number, min: number) {
-        if (
-            this.value.toString().length > max ||
-            this.value.toString().length < min
-        ) {
+        if (this.value > max || this.value < min) {
             throwError(`${this.key} must be between ${max} and ${min} `, 422)
         }
         return this
